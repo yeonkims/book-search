@@ -9,11 +9,11 @@ data class Book (
     )
 
 val fakeBook1 = Book(
-    title = "아주 작은 습관의 힘",
+    title = "아주 작은 습관의 힘아주 작은 습관의 힘",
     author = "제임스 클리어",
     publisher = "비즈니스북스",
     price = "14400",
-    coverUrl = ""
+    coverUrl = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAzMjJfOTkg%2FMDAxNjc5NDkwMzEzNDk4.yW11DGo6TSSQTMKCm22VN0pWPcvswoDfuqbJCcy2h90g.IjuXvPs8vPYyZhH8xWjSCl1n6EQSmn4QKctNIjfzLbYg.PNG.koryeo113%2Fimage.png&type=sc960_832"
 )
 
 val fakeBook2 = Book(

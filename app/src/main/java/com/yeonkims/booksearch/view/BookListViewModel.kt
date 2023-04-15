@@ -1,11 +1,16 @@
 package com.yeonkims.booksearch.view
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.yeonkims.booksearch.model.Book
-import com.yeonkims.booksearch.model.fakeBookData
+import com.yeonkims.booksearch.network.BooksApi
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
-class BookListViewModel {
+class BookListViewModel : ViewModel() {
     private val _bookList = MutableLiveData<List<Book>>()
     val bookList: LiveData<List<Book>>
         get() = _bookList
@@ -16,10 +21,18 @@ class BookListViewModel {
     }
 
     fun loadData() {
-        fakeBookData.forEach { book ->
-            val loadedBookList = _bookList.value?.toMutableList() ?: mutableListOf()
-            loadedBookList.add(book)
-            _bookList.postValue(loadedBookList.toList())
+        viewModelScope.launch {
+            try {
+                val books = BooksApi.retrofitService.getBooks(query = "비즈니스")
+                _bookList.postValue(books)
+                Log.i(javaClass.simpleName, "${books.size}")
+
+            } catch (e: HttpException) {
+                Log.i(javaClass.simpleName, e.stackTrace.contentToString())
+                Log.i(javaClass.simpleName, "${e.cause}")
+                Log.i(javaClass.simpleName, e.javaClass.simpleName)
+                Log.i(javaClass.simpleName, "${e.message}")
+            }
         }
     }
 }

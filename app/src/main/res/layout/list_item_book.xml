@@ -13,16 +13,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/cover_image"
             android:layout_width="60dp"
-            android:layout_height="99dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:src="@{book.coverUrl}"
+            android:layout_height="90dp"
+            app:imageUrl="@{book.coverUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,46 +28,48 @@
 
         <TextView
             android:id="@+id/book_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="@{`제목: ` + book.title}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cover_image"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="제목: 아주 작은 습관의 힘" />
+            tools:text="제목: 아주 작은 습관의 힘 아주 작은 습관의 힘아주 작은 습관의 힘아주 작은 습관의 힘아주 작은 습관의 힘아주 작은 습관의 힘아주 작은 습관의 힘아주 작은 습관의 힘" />
 
         <TextView
             android:id="@+id/author"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@{`저자: ` + book.author}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cover_image"
             app:layout_constraintTop_toBottomOf="@+id/book_title"
             tools:text="저자: 제임스 클리어" />
 
         <TextView
             android:id="@+id/publisher"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@{`출판사: ` + book.publisher}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cover_image"
             app:layout_constraintTop_toBottomOf="@+id/author"
             tools:text="출판사: 비즈니스북스" />
 
         <TextView
             android:id="@+id/price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:text="@{`가격: ` + book.price}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cover_image"
             app:layout_constraintTop_toBottomOf="@+id/publisher"
             tools:text="가격: 14400" />

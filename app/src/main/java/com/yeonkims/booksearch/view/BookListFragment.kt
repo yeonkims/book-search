@@ -20,10 +20,14 @@ class BookListFragment : Fragment() {
         val binding: FragmentBookListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_book_list, container, false)
 
+        val viewModel = BookListViewModel()
+
         val adapter = BookListAdapter()
         binding.bookList.adapter = adapter
 
-        adapter.submitList(fakeBookData)
+        viewModel.bookList.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
 
         binding.lifecycleOwner = this
 

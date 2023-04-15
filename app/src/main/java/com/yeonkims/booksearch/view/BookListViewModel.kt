@@ -15,6 +15,7 @@ class BookListViewModel : ViewModel() {
     val bookList: LiveData<List<Book>>
         get() = _bookList
 
+    val searchQuery : MutableLiveData<String> = MutableLiveData("")
 
     init {
         loadData()
@@ -22,8 +23,9 @@ class BookListViewModel : ViewModel() {
 
     fun loadData() {
         viewModelScope.launch {
+            Log.i(javaClass.simpleName, "${searchQuery.value}")
             try {
-                val books = BooksApi.retrofitService.getBooks(query = "비즈니스")
+                val books = BooksApi.retrofitService.getBooks(query = searchQuery.value ?: "")
                 _bookList.postValue(books)
                 Log.i(javaClass.simpleName, "${books.size}")
 
@@ -34,5 +36,9 @@ class BookListViewModel : ViewModel() {
                 Log.i(javaClass.simpleName, "${e.message}")
             }
         }
+    }
+
+    fun popUpWebPage() {
+
     }
 }

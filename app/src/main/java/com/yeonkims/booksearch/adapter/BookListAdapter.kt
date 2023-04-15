@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonkims.booksearch.databinding.ListItemBookBinding
 import com.yeonkims.booksearch.model.Book
+import com.yeonkims.booksearch.view.BookListViewModel
 
-class BookListAdapter : ListAdapter<Book, BookListAdapter.ViewHolder>(BookDiffCallback()) {
+class BookListAdapter(val bookListViewModel: BookListViewModel) : ListAdapter<Book, BookListAdapter.ViewHolder>(BookDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -16,12 +17,13 @@ class BookListAdapter : ListAdapter<Book, BookListAdapter.ViewHolder>(BookDiffCa
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, bookListViewModel)
     }
 
     class ViewHolder(private val binding: ListItemBookBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Book) {
+        fun bind(item: Book, bookListViewModel: BookListViewModel) {
             binding.book = item
+            binding.bookListViewModel = bookListViewModel
         }
 
         companion object {

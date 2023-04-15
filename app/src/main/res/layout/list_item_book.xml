@@ -6,6 +6,10 @@
 
     <data>
         <variable
+            name="bookListViewModel"
+            type="com.yeonkims.booksearch.view.BookListViewModel" />
+
+        <variable
             name="book"
             type="com.yeonkims.booksearch.model.Book" />
 
@@ -14,6 +18,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{() -> bookListViewModel.popUpWebPage()}"
         android:padding="8dp">
 
         <ImageView

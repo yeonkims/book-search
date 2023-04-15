@@ -5,5 +5,6 @@ data class Book (
     val author: String,
     val publisher: String,
     val price: String,
-    val coverUrl: String
+    val coverUrl: String,
+    val link: String
     )

@@ -15,7 +15,8 @@ class BooksJsonAdapter {
                 author = bookJson.author,
                 publisher = bookJson.publisher,
                 price = bookJson.discount,
-                coverUrl = bookJson.image
+                coverUrl = bookJson.image,
+                link = bookJson.link
             )
         }
     }

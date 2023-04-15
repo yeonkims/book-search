@@ -16,11 +16,11 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/book_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="@{() -> bookListViewModel.popUpWebPage()}"
         android:padding="8dp">
 
         <ImageView

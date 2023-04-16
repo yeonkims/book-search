@@ -1,11 +1,11 @@
 package com.yeonkims.booksearch.view
 
 import android.os.Bundle
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.yeonkims.booksearch.R
 import com.yeonkims.booksearch.adapter.BookListAdapter
 import com.yeonkims.booksearch.databinding.FragmentBookListBinding
@@ -30,9 +30,22 @@ class BookListFragment : Fragment() {
             adapter.submitList(it)
         }
 
+        setHasOptionsMenu(true)
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_search) {
+            findNavController().navigate(R.id.action_bookListFragment_to_keywordListFragment)
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

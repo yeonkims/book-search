@@ -9,5 +9,13 @@
         android:id="@+id/bookListFragment"
         android:name="com.yeonkims.booksearch.view.BookListFragment"
         android:label="BookListFragment"
-        tools:layout="@layout/fragment_book_list"/>
+        tools:layout="@layout/fragment_book_list">
+        <action
+            android:id="@+id/action_bookListFragment_to_keywordListFragment"
+            app:destination="@id/keywordListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/keywordListFragment"
+        android:name="com.yeonkims.booksearch.view.KeywordListFragment"
+        android:label="KeywordListFragment" />
 </navigation>

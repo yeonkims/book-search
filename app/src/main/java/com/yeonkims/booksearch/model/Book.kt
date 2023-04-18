@@ -7,4 +7,4 @@ data class Book (
     val price: String,
     val coverUrl: String,
     val link: String
-    )
+)

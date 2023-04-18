@@ -1,12 +1,18 @@
 package com.yeonkims.booksearch.view
 
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.yeonkims.booksearch.database.Keyword
+import com.yeonkims.booksearch.database.KeywordDao
 import com.yeonkims.booksearch.model.Book
 import com.yeonkims.booksearch.network.BooksApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BookListViewModel : ViewModel() {
+class BookListViewModel(private val keywordDao: KeywordDao) : ViewModel() {
     private val _bookList = MutableLiveData<List<Book>>()
     val bookList: LiveData<List<Book>>
         get() = _bookList
@@ -17,33 +23,39 @@ class BookListViewModel : ViewModel() {
         it && bookList.value.isNullOrEmpty()
     }
 
-    var pageStart = 1
-    private val pageSize = 20
-    var searchedWord: String = ""
-    var total: Int? = null
-    var hasNextPage = false
+    private var pageStart = 1
+    private var searchedWord: String = ""
+    private var total: Int? = null
+    private var hasNextPage = false
 
-    fun loadData() {
+    fun searchCurrentText() {
         val searchWord = searchQuery.value
-        Log.i("javaClass.simpleName", "ATTEMPTING SEARCH WORD $searchWord")
 
-        if(searchWord.isNullOrEmpty() || isLoading.value == true) return
+        if(searchWord.isNullOrBlank()) return
+
+        searchNewWord(searchWord)
+    }
+
+    fun searchNewWord(searchWord: String) {
+        if(searchWord.isBlank() || isLoading.value == true) return
         _bookList.value = emptyList()
+        searchQuery.value = searchWord
         isLoading.value = true
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 pageStart = 1
                 val books = BooksApi.retrofitService.getBooks(
                     query = searchWord,
-                    pageSize = pageSize,
+                    pageSize = PAGE_SIZE,
                     pageStart = pageStart
                 )
-                pageStart += pageSize
+                pageStart += PAGE_SIZE
                 searchedWord = searchWord
                 total = books.total
-                hasNextPage = books.items.size == pageSize || total != books.items.size
+                hasNextPage = (books.items.size == PAGE_SIZE || total != books.items.size) && pageStart <= PAGE_START_LIMIT
                 _bookList.postValue(books.items)
+                saveSearchWord(searchWord)
             } catch (_: Throwable) {
             }
             isLoading.postValue(false)
@@ -59,20 +71,30 @@ class BookListViewModel : ViewModel() {
             try {
                 val books = BooksApi.retrofitService.getBooks(
                     query = searchedWord,
-                    pageSize = pageSize,
+                    pageSize = PAGE_SIZE,
                     pageStart = pageStart
                 )
 
-                pageStart += pageSize
+                pageStart += PAGE_SIZE
 
                 val combinedList = _bookList.value!!.toMutableList()
                 combinedList.addAll(books.items)
 
-                hasNextPage = books.items.size == pageSize || total != combinedList.size
+                hasNextPage = (books.items.size == PAGE_SIZE || total != books.items.size) && pageStart <= PAGE_START_LIMIT
                 _bookList.postValue(combinedList)
             } catch (_: Throwable) {
             }
             isLoading.postValue(false)
         }
+    }
+
+    private fun saveSearchWord(searchWord: String) {
+        keywordDao.insert(Keyword.new(searchWord =  searchWord))
+        keywordDao.deleteOldKeywords()
+    }
+
+    companion object {
+        private const val PAGE_START_LIMIT = 1000
+        private const val PAGE_SIZE = 20
     }
 }

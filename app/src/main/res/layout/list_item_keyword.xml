@@ -7,7 +7,7 @@
     <data>
         <variable
             name="keyword"
-            type="com.yeonkims.booksearch.model.Keyword" />
+            type="String" />
 
         <variable
             name="viewModel"
@@ -16,7 +16,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/book_layout"
+        android:id="@+id/search_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -27,7 +27,7 @@
             android:id="@+id/book_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{keyword.keyword}"
+            android:text="@{keyword}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="비즈니스" />

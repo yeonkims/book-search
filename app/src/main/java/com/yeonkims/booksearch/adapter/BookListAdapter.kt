@@ -11,7 +11,7 @@ import com.yeonkims.booksearch.databinding.ListItemBookBinding
 import com.yeonkims.booksearch.model.Book
 import com.yeonkims.booksearch.view.BookListViewModel
 
-class BookListAdapter(val bookListViewModel: BookListViewModel)
+class BookListAdapter(private val viewModel: BookListViewModel)
     : ListAdapter<Book, BookListAdapter.ViewHolder>(BookDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,13 +20,15 @@ class BookListAdapter(val bookListViewModel: BookListViewModel)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, bookListViewModel)
+        val isLastItem = itemCount == position + 1
+        val isLoading = isLastItem && viewModel.isLoading.value == true
+        holder.bind(item, isLoading)
     }
 
     class ViewHolder(private val binding: ListItemBookBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Book, bookListViewModel: BookListViewModel) {
+        fun bind(item: Book, isLoading: Boolean) {
             binding.book = item
-            binding.bookListViewModel = bookListViewModel
+            binding.isLoading = isLoading
 
             binding.bookLayout.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW)
